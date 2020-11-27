@@ -32,7 +32,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "fs.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -94,10 +94,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USB_DEVICE_Init();
+
   MX_SPI1_Init();
-  MX_SDIO_SD_Init();
   MX_DMA_Init();
+  MX_SDIO_SD_Init();
   MX_UART4_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
@@ -109,15 +109,23 @@ int main(void)
   MX_RNG_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
-
+  file_init();
   /* USER CODE END 2 */
-
+  static uint16_t tick;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  MX_USB_DEVICE_Init();
   while (1)
   {
     /* USER CODE END WHILE */
-
+    file_flush();
+	  
+	  if(tick<1000)
+	  {
+		  tick++;
+		 file_log((uint8_t*)"0123456789\r\n" , 12);
+	  }
+	  
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
