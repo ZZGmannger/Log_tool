@@ -95,6 +95,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
 
+  MX_USB_DEVICE_Init();
+  
   MX_SPI1_Init();
   MX_DMA_Init();
   MX_SDIO_SD_Init();
@@ -114,7 +116,7 @@ int main(void)
   static uint16_t tick;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  MX_USB_DEVICE_Init();
+
   while (1)
   {
     /* USER CODE END WHILE */
