@@ -19,11 +19,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "fatfs.h"
 #include "rng.h"
 #include "rtc.h"
 #include "sdio.h"
-#include "dma.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -94,11 +94,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-
-  MX_USB_DEVICE_Init();
-  
-  MX_SPI1_Init();
   MX_DMA_Init();
+  MX_USB_DEVICE_Init();
+  MX_SPI1_Init();
   MX_SDIO_SD_Init();
   MX_UART4_Init();
   MX_USART1_UART_Init();
@@ -112,22 +110,17 @@ int main(void)
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
   file_init();
+  file_log("123456789",9);
+  flush_force = 1;
   /* USER CODE END 2 */
-  static uint16_t tick;
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
   while (1)
   {
     /* USER CODE END WHILE */
-    file_flush();
-	  
-	  if(tick<1000)
-	  {
-		  tick++;
-		 file_log((uint8_t*)"0123456789\r\n" , 12);
-	  }
-	  
+      file_flush();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
