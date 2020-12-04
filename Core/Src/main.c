@@ -63,7 +63,8 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+#include "sd_diskio.h"
+#include "ff_gen_drv.h"
 /* USER CODE END 0 */
 
 /**
@@ -95,7 +96,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_USB_DEVICE_Init();
+
   MX_SPI1_Init();
   MX_SDIO_SD_Init();
   MX_UART4_Init();
@@ -109,18 +110,25 @@ int main(void)
   MX_RNG_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
-  file_init();
-  file_log("123456789",9);
-  flush_force = 1;
+//  file_init();
+//  file_log("123456789",9);
+//  flush_force = 1;
   /* USER CODE END 2 */
-
+   MX_USB_DEVICE_Init();
   /* Infinite loop */
+//    uint8_t ret;
+     SD_Driver.disk_initialize(0);
+  if(SD_Driver.disk_status(0) == 0)
+  {
+//       ret = SD_Driver.disk_write(0,"-------------------------------" , 0, 1);
+//       ret = SD_Driver.disk_read(0,_disk, 0, 120);
+  }
   /* USER CODE BEGIN WHILE */
 
   while (1)
   {
     /* USER CODE END WHILE */
-      file_flush();
+//      file_flush();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
