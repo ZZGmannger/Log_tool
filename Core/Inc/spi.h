@@ -27,7 +27,7 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#define  SPI2_CS(x)   HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14,(GPIO_PinState)x)
 /* USER CODE END Includes */
 
 extern SPI_HandleTypeDef hspi1;

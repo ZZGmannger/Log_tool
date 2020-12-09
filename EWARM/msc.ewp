@@ -365,6 +365,10 @@
                     <state>$PROJ_DIR$\..\Middlewares\ST\STM32_USB_Device_Library\Class</state>
                     <state>$PROJ_DIR$\..\Middlewares\ST\STM32_USB_Device_Library\Class\CDC</state>
                     <state>$PROJ_DIR$\..\user</state>
+                    <state>$PROJ_DIR$\..\ETH\Ethernet</state>
+                    <state>$PROJ_DIR$\..\ETH\Ethernet\W5500</state>
+                    <state>$PROJ_DIR$\..\ETH\Internet\FTPServer</state>
+                    <state>$PROJ_DIR$\..\ETH\Application\loopback</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1101,6 +1105,45 @@
                 <file>
                     <name>$PROJ_DIR$\..\Core\Src\usart.c</name>
                 </file>
+            </group>
+            <group>
+                <name>ETH</name>
+                <group>
+                    <name>App</name>
+                    <file>
+                        <name>$PROJ_DIR$\..\user\eth_test.c</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\user\eth_test.h</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\ETH\Application\loopback\loopback.c</name>
+                    </file>
+                </group>
+                <group>
+                    <name>Driver</name>
+                    <file>
+                        <name>$PROJ_DIR$\..\ETH\Ethernet\socket.c</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\ETH\Ethernet\socket.h</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\ETH\Ethernet\W5500\w5500.c</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\ETH\Ethernet\W5500\w5500.h</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\ETH\Ethernet\wizchip_conf.c</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\ETH\Ethernet\wizchip_conf.h</name>
+                    </file>
+                </group>
+                <group>
+                    <name>Internet</name>
+                </group>
             </group>
             <group>
                 <name>FATFS</name>

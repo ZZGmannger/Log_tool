@@ -53,7 +53,7 @@
 //
 
 #include "wizchip_conf.h"
-
+#include "spi.h"
 /////////////
 //M20150401 : Remove ; in the default callback function such as wizchip_cris_enter(), wizchip_cs_select() and etc.
 /////////////
@@ -64,7 +64,10 @@
  * null function is called.
  */
 //void 	  wizchip_cris_enter(void)           {};
-void 	  wizchip_cris_enter(void)           {}
+void  wizchip_cris_enter(void)       
+{
+    __disable_irq();
+}
 
 /**
  * @brief Default function to disable interrupt.
@@ -72,7 +75,10 @@ void 	  wizchip_cris_enter(void)           {}
  * null function is called.
  */
 //void 	  wizchip_cris_exit(void)          {};
-void 	  wizchip_cris_exit(void)          {}
+void wizchip_cris_exit(void)          
+{
+    __enable_irq();
+}
 
 /**
  * @brief Default function to select chip.
@@ -80,7 +86,10 @@ void 	  wizchip_cris_exit(void)          {}
  * null function is called.
  */
 //void 	wizchip_cs_select(void)            {};
-void 	wizchip_cs_select(void)            {}
+void 	wizchip_cs_select(void)            
+{
+    SPI2_CS(0);   
+}
 
 /**
  * @brief Default function to deselect chip.
@@ -88,7 +97,10 @@ void 	wizchip_cs_select(void)            {}
  * null function is called.
  */
 //void 	wizchip_cs_deselect(void)          {};
-void 	wizchip_cs_deselect(void)          {}
+void 	wizchip_cs_deselect(void)          
+{
+    SPI2_CS(1); 
+}
 
 /**
  * @brief Default function to read in direct or indirect interface.
@@ -97,7 +109,10 @@ void 	wizchip_cs_deselect(void)          {}
  */
  //M20150601 : Rename the function for integrating with W5300
 //uint8_t wizchip_bus_readbyte(uint32_t AddrSel) { return * ((volatile uint8_t *)((ptrdiff_t) AddrSel)); }
-iodata_t wizchip_bus_readdata(uint32_t AddrSel) { return * ((volatile iodata_t *)((ptrdiff_t) AddrSel)); }
+iodata_t wizchip_bus_readdata(uint32_t AddrSel) 
+{ 
+  return * ((volatile iodata_t *)((ptrdiff_t) AddrSel)); 
+}
 
 /**
  * @brief Default function to write in direct or indirect interface.
@@ -106,7 +121,10 @@ iodata_t wizchip_bus_readdata(uint32_t AddrSel) { return * ((volatile iodata_t *
  */
 //M20150601 : Rename the function for integrating with W5300
 //void 	wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb)  { *((volatile uint8_t*)((ptrdiff_t)AddrSel)) = wb; }
-void 	wizchip_bus_writedata(uint32_t AddrSel, iodata_t wb)  { *((volatile iodata_t*)((ptrdiff_t)AddrSel)) = wb; }
+void 	wizchip_bus_writedata(uint32_t AddrSel, iodata_t wb)  
+{ 
+  *((volatile iodata_t*)((ptrdiff_t)AddrSel)) = wb; 
+}
 
 /**
  * @brief Default function to read in SPI interface.
@@ -114,7 +132,16 @@ void 	wizchip_bus_writedata(uint32_t AddrSel, iodata_t wb)  { *((volatile iodata
  * null function is called.
  */
 //uint8_t wizchip_spi_readbyte(void)        {return 0;};
-uint8_t wizchip_spi_readbyte(void)        {return 0;}
+uint8_t wizchip_spi_readbyte(void)        
+{
+  uint8_t read_data = 0;
+  if(HAL_SPI_Receive(&hspi2, (uint8_t *)&read_data, 1, 1000)!=HAL_OK)
+  {
+         
+  }
+  while (HAL_SPI_GetState(&hspi2) != HAL_SPI_STATE_READY);
+  return read_data;
+}
 
 /**
  * @brief Default function to write in SPI interface.
@@ -122,7 +149,14 @@ uint8_t wizchip_spi_readbyte(void)        {return 0;}
  * null function is called.
  */
 //void 	wizchip_spi_writebyte(uint8_t wb) {};
-void 	wizchip_spi_writebyte(uint8_t wb) {}
+void 	wizchip_spi_writebyte(uint8_t wb) 
+{
+    if(HAL_SPI_Transmit(&hspi2, (uint8_t *)&wb, 1, 100)!=HAL_OK) 
+    {
+      
+    }
+    while (HAL_SPI_GetState(&hspi2) != HAL_SPI_STATE_READY);
+}
 
 /**
  * @brief Default function to burst read in SPI interface.
@@ -130,7 +164,14 @@ void 	wizchip_spi_writebyte(uint8_t wb) {}
  * null function is called.
  */
 //void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}; 
-void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}
+void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	
+{
+    if(HAL_SPI_Receive(&hspi2, (uint8_t *)pBuf, len, 1000)!=HAL_OK)
+    {
+           
+    }
+    while (HAL_SPI_GetState(&hspi2) != HAL_SPI_STATE_READY);
+}
 
 /**
  * @brief Default function to burst write in SPI interface.
@@ -138,7 +179,14 @@ void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}
  * null function is called.
  */
 //void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) {};
-void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) {}
+void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) 
+{
+    if(HAL_SPI_Transmit(&hspi2, (uint8_t *)pBuf, len, 1000)!=HAL_OK) 
+    {
+      
+    }
+    while (HAL_SPI_GetState(&hspi2) != HAL_SPI_STATE_READY);
+}
 
 /**
  * @\ref _WIZCHIP instance
@@ -175,14 +223,10 @@ _WIZCHIP  WIZCHIP =
         wizchip_cs_deselect
     },
     {
-        {
-            //M20150601 : Rename the function 
-            //wizchip_bus_readbyte,
-            //wizchip_bus_writebyte
-            wizchip_bus_readdata,
-            wizchip_bus_writedata
-        },
-
+       .SPI._read_byte = wizchip_spi_readbyte,
+       .SPI._write_byte = wizchip_spi_writebyte,
+       .SPI._read_burst   = wizchip_spi_readburst,
+       .SPI._write_burst  = wizchip_spi_writeburst
     }
 };
 

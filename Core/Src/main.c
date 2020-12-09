@@ -109,19 +109,18 @@ int main(void)
   MX_TIM1_Init();
   MX_RNG_Init();
   MX_FATFS_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-//  file_init();
-//  file_log("123456789",9);
-//  flush_force = 1;
   /* USER CODE END 2 */
-   MX_USB_DEVICE_Init();
+
+   void W5500_ChipInit(void);
+   W5500_ChipInit();
   /* Infinite loop */
-//    uint8_t ret;
-     SD_Driver.disk_initialize(0);
+ 
+  SD_Driver.disk_initialize(0);
   if(SD_Driver.disk_status(0) == 0)
   {
-//       ret = SD_Driver.disk_write(0,"-------------------------------" , 0, 1);
-//       ret = SD_Driver.disk_read(0,_disk, 0, 120);
+ 
   }
   /* USER CODE BEGIN WHILE */
 
@@ -129,6 +128,8 @@ int main(void)
   {
     /* USER CODE END WHILE */
 //      file_flush();
+        void w5500_test(void);
+        w5500_test();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
